@@ -246,14 +246,14 @@ def processCommand(c):
         speak("Goodbye!")
         sys.exit()
         #other commands will attend by gemini
-    # else:
-        # if not is_connected():
-        #     print("No internet connection.")
-        #     speak("No internet connection.")
-        #     return
-    #     response = aiProcess(c)
-    #     print(response)
-    #     speak(response)
+    else:
+        if not is_connected():
+            print("No internet connection.")
+            speak("No internet connection.")
+            return
+        response = aiProcess(c)
+        print(response)
+        speak(response)
 
 
     
