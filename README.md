@@ -18,8 +18,8 @@ Nova is a personal AI voice assistant built using Python. It can understand voic
 
 ## 📸 Screenshots
 
-### Home / Running Assistant
-![Nova Screenshot](screenshots/home.png)
+### News Mode
+![News](screenshots/news.png)
 
 ### Running Mode
 ![Listening](screenshots/running.png)
@@ -27,9 +27,8 @@ Nova is a personal AI voice assistant built using Python. It can understand voic
 ### AI Response
 ![AI Response](screenshots/ai-response.png)
 
-> Create a folder named **screenshots** and add your images there.
-
----
+### Music Mode
+![Music](screenshots/music.png)
 
 ## 🚀 Features
 
