@@ -1,7 +1,146 @@
 <p align="center">
-  <img src="nova-logo.png" width="220" alt="Nova Logo">
+  <img src="./nova-logo.png" width="220" alt="Nova Logo">
 </p>
 
-# Nova – Personal AI Voice Assistant
+<h1 align="center">Nova – Personal AI Voice Assistant</h1>
 
-Nova is a Python-based AI voice assistant with wake-word detection, speech recognition, AI-powered conversations, Google Search, website opening, music playback, and live news reading.
+<p align="center">
+A Python-based AI Voice Assistant with Speech Recognition, AI-powered conversations, Web Automation, Music Playback, and System Control.
+</p>
+
+---
+
+## ✨ Overview
+
+Nova is a personal AI voice assistant built using Python. It can understand voice commands, respond using text-to-speech, automate desktop tasks, search the web, play music, and answer questions using AI.
+
+---
+
+## 📸 Screenshots
+
+### Home / Running Assistant
+![Nova Screenshot](screenshots/home.png)
+
+### Listening Mode
+![Listening](screenshots/listening.png)
+
+### AI Response
+![AI Response](screenshots/response.png)
+
+> Create a folder named **screenshots** and add your images there.
+
+---
+
+## 🚀 Features
+
+- 🎙️ Wake-word detection ("Nova")
+- 🗣️ Speech Recognition
+- 🤖 AI-powered conversations (Gemini API)
+- 🌐 Open websites with voice commands
+- 🔍 Google Search
+- 🎵 Music playback
+- 📰 Live news reading
+- 🖥️ Open applications
+- 📂 Minimize all windows
+- ❌ Close all windows
+- 🔊 Text-to-Speech responses
+- 🇮🇳 Hindi & English voice support
+
+---
+
+## 🛠️ Tech Stack
+
+- Python
+- SpeechRecognition
+- Google Gemini API
+- gTTS
+- pygame
+- Requests
+- Webbrowser
+- Git
+- GitHub
+
+---
+
+## ⚙️ Installation
+
+Clone the repository
+
+```bash
+git clone https://github.com/sauravkr1111/Personal-AI-Voice-assistant.git
+```
+
+Go to project folder
+
+```bash
+cd Personal-AI-Voice-assistant
+```
+
+Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the assistant
+
+```bash
+python main.py
+```
+
+---
+
+## 🎤 Supported Commands
+
+Examples:
+
+- Nova
+- Open YouTube
+- Open Google
+- Search Python
+- Play Believer
+- Latest News
+- Minimize all windows
+- Close all windows
+- What's the weather?
+- Tell me a joke
+
+---
+
+## 📁 Project Structure
+
+```
+Personal-AI-Voice-assistant
+│
+├── audios/
+├── screenshots/
+├── nova-logo.png
+├── greetings.py
+├── musiclibrary.py
+├── websites.py
+├── main.py
+├── README.md
+└── requirements.txt
+```
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 👨‍💻 Developer
+
+**Saurav Kumar**
+
+GitHub:
+https://github.com/sauravkr1111
+
+LinkedIn:
+(Add your LinkedIn profile link)
+
+---
+
+⭐ If you like this project, don't forget to give it a Star!
