@@ -138,7 +138,7 @@ GitHub:
 https://github.com/sauravkr1111
 
 LinkedIn:
-([Add your LinkedIn profile link)](https://www.linkedin.com/in/saurav-kumar-129s)
+https://www.linkedin.com/in/saurav-kumar-129s
 
 ---
 
