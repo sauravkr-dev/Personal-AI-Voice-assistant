@@ -21,11 +21,11 @@ Nova is a personal AI voice assistant built using Python. It can understand voic
 ### Home / Running Assistant
 ![Nova Screenshot](screenshots/home.png)
 
-### Listening Mode
-![Listening](screenshots/listening.png)
+### Running Mode
+![Listening](screenshots/running.png)
 
 ### AI Response
-![AI Response](screenshots/response.png)
+![AI Response](screenshots/ai-response.png)
 
 > Create a folder named **screenshots** and add your images there.
 
