@@ -1,0 +1,14 @@
+# Virtual Environment
+.venv/
+
+# Python Cache
+__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+
+# API Keys
+gemini_api.txt
+google_translate_api.txt
+news_api.txt
