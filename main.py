@@ -26,7 +26,7 @@ minimized = False
 def translate_to_english(text):
     try:
         return GoogleTranslator(
-            source="auto",
+            source="auto",  
             target="en"
         ).translate(text)
     except:
@@ -74,19 +74,21 @@ with open(resource_path("gemini_api.txt"), "r") as f:
 
 with open(resource_path("news_api.txt"), "r") as f:
     news_api = f.read().strip()
-
+    
 pygame.mixer.init()
-pygame.mixer.init()
 
-def speak(text):
+def speak(text, translate=True):
+    print("Speak Language:", current_language)
+    # print("Before Translation:", text)
     filename = f"{uuid.uuid4()}.mp3"
 
-    if current_language != "en-IN":
+    if translate and current_language != "en-IN":
         text = GoogleTranslator(
             source="en",
             target=current_language.split("-")[0]
         ).translate(text)
-
+    # print("After Translation:", text)
+    print("Response:", text)
     tts = gTTS(
         text=text,
         lang=current_language.split("-")[0]
@@ -108,21 +110,108 @@ def speak(text):
     if os.path.exists(filename):
         os.remove(filename)
 
-def play_audio(filename):
-    pygame.mixer.music.load(resource_path(filename))
-    pygame.mixer.music.play()
+def read_news():
+    global active
+    if not is_connected():
+        print("No internet connection.")
+        speak("No internet connection.")
+        return
+    response = requests.get(
+        f"https://newsapi.org/v2/everything?q=india&language=en&sortBy=publishedAt&apiKey={news_api}",
+        timeout=10
+    )
+    if response.status_code == 200:
 
-    while pygame.mixer.music.get_busy():
-        pygame.time.Clock().tick(10)
+        data = response.json()
+        articles = data.get("articles", [])
 
-    pygame.mixer.music.stop()
-    pygame.mixer.music.unload()
-    time.sleep(0.05)
+        if not articles:
+            print("No news found.")
+            speak("No news found.")
+            return
+        i = 0
+        print("Press 'q' to stop the news...")
+        speak("Press 'q' to stop the news...")
+        print("Here are today's top headlines.")
+        speak("Here are today's top headlines.")
+        while i < len(articles):
+
+                    #listen 5 news
+            for _ in range(5):
+                key = ""
+                if msvcrt.kbhit():
+                    key = msvcrt.getch().decode(errors="ignore").lower()
+
+                    if key == "q":
+
+                        print("Stopping news...")
+                        speak("Stopping news")
+                        break
+
+                if i >= len(articles):
+                            break
+
+                print(f"{i+1}. {articles[i]['title']}")
+                speak(articles[i]["title"])
+                i += 1
+
+                    # After all news finished
+            if i >= len(articles):
+                print("That's all for today's news.")
+                speak("That's all for today's news.")
+                break
+
+            if key == "q":
+                break
+                    # Continue or not
+            print("Do you want me to continue? Please say yes or no.")
+            speak("Do you want me to continue? Please say yes or no.")
+
+            try:
+                with sr.Microphone() as source:
+                    print("Listening...")
+                    audio = recognizer.listen(source, timeout=10, phrase_time_limit=3)
+
+                reply = recognizer.recognize_google(audio).lower()
+                print("Reply:", reply)
+
+                        # Continue
+                if any(x in reply for x in ["yes", "continue", "go on", "sure", "ofcourse"]):
+                            continue
+
+                        # Stop news
+                elif any(x in reply for x in ["no", "stop"]):
+                    print("Okay, stopping the news.")
+                    speak("Okay, stopping the news.")
+                    break
+
+                        # deactivate Nova
+                elif any(x in reply for x in ["deactivate yourself", "go to sleep", "deactivate nova", "sleep nova", "nova sleep", "nova deactivate"]):
+                    print("Deactivating Nova...")
+                    speak("Deactivating Nova...")
+                    active = False
+                    return
+
+                else:
+                    print("I will stop the news.")
+                    speak("I will stop the news.")
+                    break
+
+            except sr.WaitTimeoutError:
+                print("No response received. Stopping the news.")
+                speak("No response received. Stopping the news.")
+                break
+
+            except sr.UnknownValueError:
+                print("I didn't understand. Stopping the news.")
+                speak("I didn't understand. Stopping the news.")
+                break
+
 
 def processCommand(c):
     global active, ai_access, minimized, current_language
     #print("processCommand:", repr(c))
-    print(f"Command: {c}")
+    # print(f"Command: {c}")
 
     if "language" in c.lower():
         for name, code in languages.items():
@@ -145,24 +234,37 @@ def processCommand(c):
         print(f"Opening {search_query}.")
         speak(f"Opening {search_query}.")
 
-    elif "search" in c.lower():
+    elif any(x in c.lower() for x in ["search", "find"]):
         if not is_connected():
             print("No internet connection.")
             speak("No internet connection.")
             return
-        search_query = c.lower().replace("search", "").strip()
+        if c.lower().startswith("search for "):
+            search_query = c[11:]
+        elif c.lower().startswith("find for "):
+            search_query = c[9:]
+        elif c.lower().startswith("find "):
+            search_query = c[5:]
+        else:
+            search_query = c.replace("search","",1).strip()
+        
         url = f"https://www.google.com/search?q={search_query}"
         webbrowser.open(url)
         print(f"Searching for {search_query} on Google.")
         speak(f"Searching for {search_query} on Google.")
 
-    elif any(x in c.lower() for x in ["music","some music", "play anything"]):
+    elif any(x in c.lower() for x in ["music","some music", "play anything", "some song", "play songs", "play a random song"]):
 
         name, url = random.choice(list(musiclibrary.music.items()))
 
         webbrowser.open(url)
-        print(f"Playing {name}")
-        speak(f"Playing {name}")
+        print(f"Playing song {name}")
+
+        if current_language.startswith("en"):
+            speak(f"Playing song {name}")
+        else:
+            speak("Playing song")
+            speak(name, translate=False)
         
     elif "play" in c.lower():
         if not is_connected():
@@ -174,110 +276,23 @@ def processCommand(c):
         for name, url in musiclibrary.music.items():
             if name in song:
                 webbrowser.open(url)
-                print(f"Playing {name}")
-                speak(f"Playing {name}")
+                if current_language.startswith("en"):
+                    speak(f"Playing song {name}")
+                else:
+                    speak("Playing song")
+                    speak(name, translate=False)
                 return
         webbrowser.open(f"https://open.spotify.com/search/{song.replace(' ', '%20')}")
-        print(f"searching {song} on spotify")
-        speak(f"searching {song} on spotify")
+        if current_language.startswith("en"):
+            speak(f"Searching {song} on Spotify")
+        else:
+            speak("Searching on Spotify")
+            speak(song, translate=False)
 
 
     elif "news" in c.lower():
-        if not is_connected():
-            print("No internet connection.")
-            speak("No internet connection.")
-            return
-        response = requests.get(
-            f"https://newsapi.org/v2/everything?q=india&language=en&sortBy=publishedAt&apiKey={news_api}",
-            timeout=10
-        )
-
-        if response.status_code == 200:
-
-            data = response.json()
-            articles = data.get("articles", [])
-
-            if not articles:
-                print("No news found.")
-                speak("No news found.")
-                return
-            i = 0
-            print("Press 'q' to stop the news...")
-            speak("Press 'q' to stop the news...")
-            print("Here are today's top headlines.")
-            speak("Here are today's top headlines.")
-            while i < len(articles):
-
-                #listen 5 news
-                for _ in range(5):
-                    key = ""
-                    if msvcrt.kbhit():
-                        key = msvcrt.getch().decode(errors="ignore").lower()
-
-                        if key == "q":
-
-                            print("Stopping news...")
-                            speak("Stopping news")
-                            break
-
-                    if i >= len(articles):
-                        break
-
-                    print(f"{i+1}. {articles[i]['title']}")
-                    speak(articles[i]["title"])
-                    i += 1
-
-                # After all news finished
-                if i >= len(articles):
-                    print("That's all for today's news.")
-                    speak("That's all for today's news.")
-                    break
-
-                if key == "q":
-                    break
-                # Continue or not
-                print("Do you want me to continue? Please say yes or no.")
-                speak("Do you want me to continue? Please say yes or no.")
-
-                try:
-                    with sr.Microphone() as source:
-                        print("Listening...")
-                        audio = recognizer.listen(source, timeout=10, phrase_time_limit=3)
-
-                    reply = recognizer.recognize_google(audio).lower()
-                    print("Reply:", reply)
-
-                    # Continue
-                    if any(x in reply for x in ["yes", "continue", "go on", "sure", "ofcourse"]):
-                        continue
-
-                    # Stop news
-                    elif any(x in reply for x in ["no", "stop"]):
-                        print("Okay, stopping the news.")
-                        speak("Okay, stopping the news.")
-                        break
-
-                    # deactivate Nova
-                    elif any(x in reply for x in ["deactivate yourself", "go to sleep", "deactivate nova", "sleep nova", "nova sleep", "nova deactivate"]):
-                        print("Deactivating Nova...")
-                        speak("Deactivating Nova...")
-                        active = False
-                        return
-
-                    else:
-                        print("I will stop the news.")
-                        speak("I will stop the news.")
-                        break
-
-                except sr.WaitTimeoutError:
-                    print("No response received. Stopping the news.")
-                    speak("No response received. Stopping the news.")
-                    break
-
-                except sr.UnknownValueError:
-                    print("I didn't understand. Stopping the news.")
-                    speak("I didn't understand. Stopping the news.")
-                    break
+        read_news()
+        
     if "desktop" in c.lower() and any(x in c.lower() for x in [
     "refresh",
     "reload"
@@ -392,7 +407,7 @@ def processCommand(c):
         "restart the pc", "restart pc", "restart computer", 
         "reboot the pc", 
         "reboot pc", 
-        "reboot computer"
+        "reboot computer",
         "restart the computer",
         "reboot the computer",
         "restart my pc",
@@ -493,7 +508,7 @@ if __name__ == "__main__":
             if current_language != "en-IN":
                 text = translate_to_english(text).lower()
 
-            print("Original:", original_text)
+            # print("Original:", original_text)
             print("Command :", text)
 
             if not active:
@@ -506,18 +521,27 @@ if __name__ == "__main__":
                     #command = (command.replace("hey", "").strip())
 
                     if command in greetings:
-                        play_audio(greetings[command])
+                        speak(greetings[command]["text"])
+
                     elif command:
                         processCommand(command)
-                    else:
-                        play_audio(greetings[command])
 
-                continue
+                    else:
+                        speak(greetings[""]["text"])
+
+                    continue
 
              # -------- Active Mode --------
 
             if text in greetings:
-                play_audio(greetings[text])
+                print("Current Language:", current_language)
+
+                if current_language.startswith("en"):
+                    speak(greetings[text]["text"])
+                else:
+                    speak(greetings[text]["text"])
+
+                print(f"Response: {greetings[text]['text']}")
                 continue
 
             if any(word in text for word in wake_words):
@@ -528,7 +552,17 @@ if __name__ == "__main__":
 
                 
                 if command in greetings:
-                    play_audio(greetings[command])
+                    print("Current Language:", current_language)
+
+                    if current_language.startswith("en"):
+                        speak(greetings[command]["text"])
+                        print(f"Response: {greetings[command]['text']}")
+                    else:
+                        response = greetings[command]["text"]
+                        # print(f"Response: {response}")
+                        speak(response)
+
+                    continue
 
                 elif command in ["deactivate yourself", "go to sleep", "deactivate", "sleep",]:
                     active = False
@@ -538,7 +572,8 @@ if __name__ == "__main__":
                 elif command:
                     processCommand(command)   
                 else:
-                    play_audio(greetings[command])                
+                    speak(greetings[command]["text"])
+                    print(f"Response: {greetings[command]['text']}")             
                 continue
 
             if text in ["deactivate yourself", "go to sleep", "deactivate", "sleep",]:
