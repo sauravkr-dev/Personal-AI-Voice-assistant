@@ -72,9 +72,15 @@ These features will be enabled in future updates.
 
 # 📸 Screenshots
 
-## Home Interface
+## Chat Interface
 
-![Home](screenshots/running.png)
+![Chat](screenshots/chat.png)
+
+---
+
+## Voice Command
+
+![Voice](screenshots/voice.png)
 
 ---
 
@@ -93,6 +99,12 @@ These features will be enabled in future updates.
 ## Music Mode
 
 ![Music](screenshots/music.png)
+
+---
+
+## System Control
+
+![System](screenshots/system.png)
 
 ---
 
