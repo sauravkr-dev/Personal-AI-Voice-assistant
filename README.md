@@ -74,37 +74,37 @@ These features will be enabled in future updates.
 
 ## Chat Interface
 
-![Chat](screenshots/chat.png)
+![Chat](screenshots/chat.jpg)
 
 ---
 
 ## Voice Command
 
-![Voice](screenshots/voice.png)
+![Voice](screenshots/voice.jpg)
 
 ---
 
 ## AI Response
 
-![AI](screenshots/ai-response.png)
+![AI](screenshots/ai-response.jpg)
 
 ---
 
 ## News Reader
 
-![News](screenshots/news.png)
+![News](screenshots/news.jpg)
 
 ---
 
 ## Music Mode
 
-![Music](screenshots/music.png)
+![Music](screenshots/music.jpg)
 
 ---
 
 ## System Control
 
-![System](screenshots/system.png)
+![System](screenshots/system.jpg)
 
 ---
 
