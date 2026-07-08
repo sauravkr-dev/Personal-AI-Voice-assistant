@@ -20,7 +20,7 @@ class NovaApp(ctk.CTk):
 
         self.logo_img = ctk.CTkImage(
             light_image=Image.open(resource_path("assets/logo-light.png")),
-            dark_image=Image.open(resource_path("assets/logo-dark.png")),
+            dark_image=Image.open(resource_path("assets/logo-light.png")),
             size=(42, 42)
         )
 
