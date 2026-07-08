@@ -12,3 +12,8 @@ __pycache__/
 gemini_api.txt
 google_translate_api.txt
 news_api.txt
+
+#ece files
+NovaAI.spec
+build/
+dist/

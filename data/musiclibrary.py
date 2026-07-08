@@ -34,6 +34,7 @@ music = {
     "we can't be friends": "https://open.spotify.com/track/3rUGC1vUpkDG9CZFHMur1t?si=27adaf404b854b8c",
     "fortnight": "https://open.spotify.com/track/2OzhQlSqBEmt7hmkYxfT6m?si=987b36b2378c4779",
     "fortnigt": "https://open.spotify.com/track/2OzhQlSqBEmt7hmkYxfT6m?si=987b36b2378c4779",
+    "shape of you": "https://open.spotify.com/track/7qiZfU4dY1lWllzX7mPBI3?si=0d059c603ec54ab4",
 
         # Punjabi
     "tauba tauba": "https://open.spotify.com/track/16kiQQ4BoLHDyj5W2fkfNK?si=0fdcae4a38a147b0",

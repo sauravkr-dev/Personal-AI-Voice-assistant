@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/nova-logo.png" width="220" alt="Nova Logo">
+  <img src="./assets/logo-light.png" width="220" alt="Nova Logo">
 </p>
 
 <h1 align="center">Nova – Personal AI Voice Assistant</h1>
